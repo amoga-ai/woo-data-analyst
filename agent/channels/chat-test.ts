@@ -8,12 +8,12 @@ import { httpBasic, localDev, routeAuth } from "eve/channels/auth";
 const TERMINAL = new Set(["session.waiting", "session.completed", "session.failed", "turn.waiting"]);
 // Accepts the chat app's username and password when they are set, plus local development.
 function analystAuth() {
-  const entries = [];
-  if (process.env.ANALYST_USER && process.env.ANALYST_PASSWORD) {
-    entries.push(httpBasic({ username: process.env.ANALYST_USER, password: process.env.ANALYST_PASSWORD }));
-  }
-  entries.push(localDev());
-  return entries;
+    const entries = [];
+    if (process.env.ANALYST_USER && process.env.ANALYST_PASSWORD) {
+        entries.push(httpBasic({ username: process.env.ANALYST_USER, password: process.env.ANALYST_PASSWORD }));
+    }
+    entries.push(localDev());
+    return entries;
 }
 const textId = "answer";
 
@@ -68,6 +68,14 @@ function toUIStream(eveStream: ReadableStream<unknown>, begin: (event: EveEvent)
                                         },
                                     },
                                 },
+                            } as never);
+                        }
+                        // Sends WooCommerce report results to the chat app as raw data. The console.log is temporary, to see the output shape. Remove it later.
+                        if (result?.toolName?.startsWith("woocommerce__") && result.output) {
+                            console.log("woo output:", JSON.stringify(result.output));
+                            writer.write({
+                                type: "data-report",
+                                data: { tool: result.toolName, output: result.output },
                             } as never);
                         }
                     }
