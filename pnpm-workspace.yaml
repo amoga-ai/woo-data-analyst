@@ -1,0 +1,13 @@
+overrides:
+  "@ai-sdk/provider": 4.0.26
+allowBuilds:
+  lefthook: true
+minimumReleaseAgeExclude:
+  - "@ai-sdk/*"
+  - ai
+  - eve
+  - "@eve/*"
+  - "@vercel/*"
+ignoredOptionalDependencies:
+  - "@mongodb-js/zstd"
+  - node-liblzma
